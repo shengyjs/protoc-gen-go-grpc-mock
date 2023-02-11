@@ -87,12 +87,12 @@ func genClientStub(gen *protogen.Plugin, file *protogen.File, g *protogen.Genera
 	g.P()
 
 	// 生成初始化Init函数
-	g.P("func (cc *", clientName, ") Init(configFile string, configSectionName string) error {")
+	g.P("func (cc *", clientName, ") Init(configFile string) error {")
 	g.P("// 设置配置信息")
 	g.P("if cc.conf == nil {")
 	g.P("// 读取配置信息")
 	g.P("conf := new(serviceConfig)")
-	g.P("errCode := ", configPackage.Ident("GetConfigItem"), "(configFile, configSectionName, conf)")
+	g.P("errCode := ", configPackage.Ident("GetConfigItem"), "(configFile, \"", service.GoName, "\" , conf)")
 	g.P("if errCode != config.ERR_OK {")
 	g.P(logPackage.Ident("Printf"), "(\"GetConfigItem Fail. errCode = %v\", errCode)")
 	g.P("return ", errorsPackage.Ident("New"), "(\"GetConfigItem Fail.\")")
